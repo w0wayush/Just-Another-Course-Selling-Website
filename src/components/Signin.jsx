@@ -52,6 +52,7 @@ const Signin = () => {
             variant="contained"
             onClick={() => {
               function callback2(data) {
+                console.log(data.token);
                 localStorage.setItem("token", data.token);
                 window.location = "/";
                 // console.log("Signed In successfully");

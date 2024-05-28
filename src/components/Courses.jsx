@@ -1,24 +1,36 @@
 import { Button, Card, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    function callback2(data) {
-      //       console.log(data);
-      setCourses(data.courses);
-    }
-    function callback1(res) {
-      res.json().then(callback2);
-    }
-    fetch("http://localhost:3000/admin/courses", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }).then(callback1);
+    const fetchCourses = async () => {
+      const response = await axios.get("http://localhost:3000/admin/courses", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      setCourses(response.data.courses);
+    };
+
+    fetchCourses();
+
+    // function callback2(data) {
+    //   //       console.log(data);
+    //   setCourses(data.courses);
+    // }
+    // function callback1(res) {
+    //   res.json().then(callback2);
+    // }
+    // fetch("http://localhost:3000/admin/courses", {
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: "Bearer " + localStorage.getItem("token"),
+    //   },
+    // }).then(callback1);
   }, []);
 
   return (
@@ -47,16 +59,17 @@ function Course(props) {
         margin: 10,
         width: 300,
         minHeight: 200,
+        padding: 20,
       }}
     >
       <Typography textAlign={"center"} variant="h5">
-        {props.course.title}
+        {course.title}
       </Typography>
       <Typography textAlign={"center"} variant="subtitle1">
-        {props.course.description}
+        {course.description}
       </Typography>
       <img
-        src={props.course.imageLink}
+        src={course.imageLink}
         style={{ width: 275, padding: 15 }}
         alt="image"
       ></img>
@@ -73,10 +86,10 @@ function Course(props) {
           margin={"normal"}
           variant="contained"
           onClick={() => {
-            navigate("/courses/" + course.id);
+            navigate("/courses/" + course._id);
           }}
         >
-          Update Course
+          Edit
         </Button>
       </div>
     </Card>

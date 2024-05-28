@@ -53,7 +53,8 @@ const Signup = () => {
             onClick={() => {
               function callback2(data) {
                 if (data.token) {
-                  localStorage.setItem("token", data.token);
+                  // console.log(data.token);
+                  // localStorage.setItem("token", data.token);
                   // console.log("Token saved:", data.token);
                   navigate("/signin");
                 } else {
